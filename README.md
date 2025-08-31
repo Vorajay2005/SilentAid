@@ -45,6 +45,8 @@ Add images (PNG/JPG) into a `docs/` folder and update paths below.
   - ![SilentAid Transcript](docs/transcript.png)
 - Font Controls & History
   - ![SilentAid Controls](docs/controls.png)
+- Footer
+  - ![SilentAid Footer](docs/footer.png)
 
 Tip: On macOS you can take screenshots with Shift+Cmd+4 and save into `docs/`.
 
