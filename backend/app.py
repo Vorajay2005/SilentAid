@@ -69,9 +69,22 @@ def get_emotion(text):
         best_emotion = max(scores, key=lambda x: x['score'])
         emotion_label = best_emotion['label'].lower()
         confidence = best_emotion['score']
+
+        # Build label->score dict for heuristics
+        label_scores = {e['label'].lower(): e['score'] for e in scores}
+        joy_score = label_scores.get('joy', label_scores.get('happiness', 0.0))
+        surprise_score = label_scores.get('surprise', 0.0)
+
+        # Heuristic: re-map overly positive "joy" to "excited" when cues present
+        # Cues: exclamation marks, excitement keywords, or high surprise near joy
+        excitement_cues = re.search(r"!+|\b(wow|awesome|amazing|excited|thrilled|can't wait|so happy|yay|omg|incredible|fantastic)\b", text, re.IGNORECASE)
+        effective_label = emotion_label
+        if emotion_label in ('joy', 'happiness') and (excitement_cues or surprise_score >= joy_score * 0.85):
+            effective_label = 'surprise'  # Maps to Excited in EMOTION_MAPPING
+            confidence = max(joy_score, surprise_score)
         
         # Map to our emotion system
-        emotion_info = EMOTION_MAPPING.get(emotion_label, EMOTION_MAPPING['neutral'])
+        emotion_info = EMOTION_MAPPING.get(effective_label, EMOTION_MAPPING['neutral'])
         
         return {
             'emotion': emotion_info['label'],
