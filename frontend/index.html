@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SilentAid - AI Accessibility Tool</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-content">
+          <h1 class="app-title">
+            <span class="icon">🎤</span>
+            SilentAid
+          </h1>
+          <p class="app-subtitle">AI-Powered Speech & Emotion Recognition</p>
+        </div>
+      </header>
+
+      <!-- Controls Panel -->
+      <div class="controls-panel">
+        <div class="control-group">
+          <button id="startBtn" class="btn btn-primary">
+            <span class="btn-icon">🎙️</span>
+            Start Listening
+          </button>
+          <button id="stopBtn" class="btn btn-secondary" disabled>
+            <span class="btn-icon">⏹️</span>
+            Stop
+          </button>
+        </div>
+
+        <div class="status-group">
+          <div id="status" class="status idle">
+            <span class="status-dot"></span>
+            <span class="status-text">Ready to Listen</span>
+          </div>
+        </div>
+
+        <div class="font-controls">
+          <button
+            id="fontDecrease"
+            class="btn btn-icon-only"
+            title="Decrease Font Size"
+          >
+            <span>A-</span>
+          </button>
+          <span class="font-size-display" id="fontSizeDisplay">18px</span>
+          <button
+            id="fontIncrease"
+            class="btn btn-icon-only"
+            title="Increase Font Size"
+          >
+            <span>A+</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Transcript Area -->
+      <main class="transcript-container">
+        <div class="transcript-header">
+          <h2>Live Transcript</h2>
+          <button id="clearHistory" class="btn btn-small">Clear History</button>
+        </div>
+
+        <div id="transcriptArea" class="transcript-area">
+          <div class="welcome-message">
+            <div class="welcome-icon">🎯</div>
+            <h3>Welcome to SilentAid</h3>
+            <p>
+              Click "Start Listening" to begin real-time speech transcription
+              with emotion detection.
+            </p>
+            <div class="feature-list">
+              <div class="feature">
+                <span class="feature-icon">📝</span>
+                <span>Real-time transcription</span>
+              </div>
+              <div class="feature">
+                <span class="feature-icon">😊</span>
+                <span>Emotion detection</span>
+              </div>
+              <div class="feature">
+                <span class="feature-icon">🎨</span>
+                <span>Color-coded display</span>
+              </div>
+              <div class="feature">
+                <span class="feature-icon">💾</span>
+                <span>History preservation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <p>
+            Built with ❤️ for accessibility • Web Speech API + HuggingFace AI
+          </p>
+          <div class="emotion-legend">
+            <span class="legend-item">
+              <span class="legend-emoji">😊</span>
+              <span
+                class="legend-color"
+                style="background-color: #22c55e"
+              ></span>
+              Happy
+            </span>
+            <span class="legend-item">
+              <span class="legend-emoji">😢</span>
+              <span
+                class="legend-color"
+                style="background-color: #3b82f6"
+              ></span>
+              Sad
+            </span>
+            <span class="legend-item">
+              <span class="legend-emoji">😠</span>
+              <span
+                class="legend-color"
+                style="background-color: #ef4444"
+              ></span>
+              Angry
+            </span>
+            <span class="legend-item">
+              <span class="legend-emoji">🤩</span>
+              <span
+                class="legend-color"
+                style="background-color: #f97316"
+              ></span>
+              Excited
+            </span>
+            <span class="legend-item">
+              <span class="legend-emoji">😐</span>
+              <span
+                class="legend-color"
+                style="background-color: #6b7280"
+              ></span>
+              Neutral
+            </span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+      <div class="loading-content">
+        <div class="loading-spinner"></div>
+        <p>Processing speech...</p>
+      </div>
+    </div>
+
+    <!-- Error Toast -->
+    <div id="errorToast" class="error-toast hidden">
+      <div class="error-content">
+        <span class="error-icon">⚠️</span>
+        <span class="error-message"></span>
+        <button class="error-close">&times;</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
