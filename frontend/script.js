@@ -1,7 +1,8 @@
 // SilentAid Frontend JavaScript
 class SilentAid {
   constructor() {
-    this.isListening = false;
+    this.isListening = false; // User intent to keep listening
+    this.isRecognitionActive = false; // Actual engine running state
     this.recognition = null;
     this.fontSize = 18;
     this.maxHistory = 50;
@@ -61,8 +62,11 @@ class SilentAid {
 
     // Event handlers
     this.recognition.onstart = () => {
+      this.isRecognitionActive = true;
       console.log("🎙️ Speech recognition started");
-      this.updateStatus("listening", "Listening...");
+      if (this.isListening) {
+        this.updateStatus("listening", "Listening...");
+      }
     };
 
     this.recognition.onresult = (event) => {
@@ -75,17 +79,13 @@ class SilentAid {
     };
 
     this.recognition.onend = () => {
+      this.isRecognitionActive = false;
       console.log("🛑 Speech recognition ended");
-      if (this.isListening) {
-        // Restart if we're supposed to be listening
-        setTimeout(() => {
-          if (this.isListening) {
-            this.recognition.start();
-          }
-        }, 100);
-      } else {
-        this.updateStatus("idle", "Stopped");
-      }
+      // Treat natural end as stopped; do not auto-restart
+      this.isListening = false;
+      this.startBtn.disabled = false;
+      this.stopBtn.disabled = true;
+      this.updateStatus("idle", "Stopped");
     };
   }
 
@@ -173,7 +173,7 @@ class SilentAid {
 
     try {
       this.recognition.start();
-      this.updateStatus("listening", "Listening...");
+      // onstart handler will set status to Listening
       console.log("🎙️ Started listening");
     } catch (error) {
       console.error("Error starting recognition:", error);
@@ -189,7 +189,7 @@ class SilentAid {
     this.startBtn.disabled = false;
     this.stopBtn.disabled = true;
 
-    if (this.recognition) {
+    if (this.recognition && this.isRecognitionActive) {
       this.recognition.stop();
     }
 
